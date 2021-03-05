@@ -1,2 +1,27 @@
-== gp-openshift-logging
+= gp-openshift-logging
+:toc:
+
 Automated installation and configuration of the logging stack for application logging
+
+== Goal
+
+* satisfy the ticket https://github.com/gepaplexx/docs/issues/27[#27 Cluster Logging for Applications]
+
+* learn what you need to know in addition to the available docs
+
+== Starting Point
+
+* we have a running cluster
+
+* we have a service machine to run kubectl, oc, ansible, helm, etc
+
+* we have the official  https://docs.openshift.com/container-platform/4.6/logging/cluster-logging.html[docs]
+
+* we have a storage class/provisioner taking away the headache of pv/pvc 
+
+== Do it by hand
+
+The first step of installing and deploying the cluster logging operator and the EFK stack is fairly simple. +
+We can run it by hand once. +
+Then we automate it.
+
