@@ -14,6 +14,7 @@ Automated installation and configuration of the logging stack for application lo
 * we have a running cluster
 
 * we have a service machine to run kubectl, oc, ansible, helm, etc
+//helm is not on the service machine
 
 * we have the official  https://docs.openshift.com/container-platform/4.6/logging/cluster-logging.html[docs]
 
@@ -24,4 +25,84 @@ Automated installation and configuration of the logging stack for application lo
 The first step of installing and deploying the cluster logging operator and the EFK stack is fairly simple. +
 We can run it by hand once. +
 Then we automate it.
+
+=== yml files
+
+Following the official docs we got yaml files for each step. +
+See cl-setup/yaml/ +
+For the manual installation we kubectl apply -f the files. +
+The files are prefixed with a number, so the order is clear: +
+Start with 01 and apply -f until the last file.
+
+=== cleanup
+
+Since we have a previous installation we will clean it up. +
+We remove all the k8s objects with kubectl delte -f. +
+Then remove all the pvs & pvcs. +
+Delete the stuff on the nfs share. +
+Make sure everything is gone, either via console or cli. +
+
+== helm chart
+
+create the helm chart and copy our yamls to the template folder.
+----
+helm create cl-helm
+cd cl-helm/templates
+cp -r ../../cl-setup/yaml/* .
+----
+
+lint helm chart
+----
+cd ..
+helm lint
+----
+
+=== run helm chart
+
+run the chart
+----
+[work@mariooberwalder-linux-gepardec-local gp-openshift-logging]$ helm upgrade --install gp-logging ./cl-helm -n openshift-logging --create-namespace --atomic
+Release "gp-logging" does not exist. Installing it now.
+NAME: gp-logging
+LAST DEPLOYED: Tue Mar  9 16:46:27 2021
+NAMESPACE: openshift-logging
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+----
+
+=== uninstall
+
+We are responsible to remove everything if needed.
+
+----
+helm uninstall gp-logging
+----
+
+This removed everything, we are good.
+
+
+== example app for logging
+
+To validate the efk deployment we need an app. +
+That app produces a known log output. +
+Multiline Stacktraces are a plus for testing. +
+
+Goals
+
+*    Aufbau von EFK in OpenShift Test Cluster. Done: <<Do it by hand>>
+
+*    Automatisiert einspielen eines EFK als helm chart. Done: <<helm chart>>
+
+*    Automatiserte Updates des EFK. Done: passiert über die installierten Operator
+
+*    Test application die Logs in EFK schreibt (inkl stack traces)
+
+*    Wir können multi line error message verarbeiten (java stack trace)
+
+*    User als read only brechtigen können.
+
+*    Wir können log rotation leicht anpassen (e.g. via helm chart)
+
+*    mind. 30 Tage Logs vorhalten (Storage: 10 GB / Monat)
 
