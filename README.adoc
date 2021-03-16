@@ -88,6 +88,8 @@ To validate the efk deployment we need an app. +
 That app produces a known log output. +
 Multiline Stacktraces are a plus for testing. +
 
+
+
 Goals
 
 *    Aufbau von EFK in OpenShift Test Cluster. Done: <<Do it by hand>>
