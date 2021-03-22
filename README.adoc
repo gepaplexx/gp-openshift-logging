@@ -10,7 +10,7 @@ Automated installation and configuration of the logging stack for application lo
 * learn what you need to know in addition to the available docs
 
 == Starting Point
-
+podman push  default-route-openshift-image-registry.apps.ocp.gp.local/eval-testapp/merkurbooster --tls-verify=false
 * we have a running cluster
 
 * we have a service machine to run kubectl, oc, ansible, helm, etc
@@ -61,7 +61,7 @@ helm lint
 
 run the chart
 ----
-[work@mariooberwalder-linux-gepardec-local gp-openshift-logging]$ helm upgrade --install gp-logging ./cl-helm -n openshift-logging --create-namespace --atomic
+$ helm upgrade --install gp-logging ./cl-helm -n openshift-logging --create-namespace --atomic
 Release "gp-logging" does not exist. Installing it now.
 NAME: gp-logging
 LAST DEPLOYED: Tue Mar  9 16:46:27 2021
